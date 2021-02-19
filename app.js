@@ -13,9 +13,23 @@ const load_btn = document.createElement('input');
 load_btn.type = 'file';
 load_btn.accept = ".png,.jpg,.jpeg";
 document.body.appendChild(load_btn);
+document.body.style.display = 'flex';
+document.body.style.flexDirection = 'column';
+document.body.style.alignItems = 'flex-start';
+
 
 const canvas = document.createElement('canvas'), context = canvas.getContext('2d');
 document.body.appendChild(canvas);
+
+const trim_button = document.createElement('button');
+trim_button.innerText = "trim";
+trim_button.onclick = () => {
+  const cutted = context.getImageData(7, 7, canvas.width - 7, canvas.height - 7);
+  canvas.width = canvas.width - 14;
+  canvas.height = canvas.height - 14;
+  context.putImageData(cutted, 0, 0);
+};
+document.body.appendChild(trim_button);
 
 const set_canvas = document.createElement('canvas'), set_context = set_canvas.getContext('2d');
 document.body.appendChild(set_canvas);
@@ -23,7 +37,7 @@ const block = document.createElement('div');
 block.style.display = 'flex';
 block.style.fontSize = '10px';
 
-const elements = ['O', '.', 'R', 'R', 'B', 'E', '+', ' ', 'X', 'D', '>', '<', '#', 'L', 'L', 'L', 'W', 'P', 'D', 'C', '*', 'A', 'E'];
+const elements = ['O', '.', 'R', 'U', 'B', 'E', '+', '_', 'X', 'D', '>', '<', '#', 'L', 'M', 'N', 'W', 'P', 'D', 'C', '*', 'A', 'Z'];
 
 elements.forEach((_) => {
   const el = document.createElement('div');
@@ -53,7 +67,6 @@ image_set.onload = () => {
     const transformed = getTransformedData(tile.data);
     return transformed;
   })
-  console.log(ideal_model);
 }
 
 
@@ -77,25 +90,25 @@ load_btn.onchange = e => {
   }
 
   canvas.onclick = () => {
-    const cutted = context.getImageData(7, 7, canvas.width - 7, canvas.height - 7);
-    canvas.width = canvas.width - 14;
-    canvas.height = canvas.height - 14;
-    context.putImageData(cutted, 0, 0);
+
     let x = 0, y = 0, size = 16;
-    const interval = setInterval(() => {
-      if (y >= canvas.height) {
-        display(result);
-        clearInterval(interval); return;
+    while (y < canvas.height) {
+      
+      while (x < canvas.width - size) {
+        const tile = context.getImageData(x, y, size, size);
+        const transformed = getTransformedData(tile.data);
+        const value = compare(transformed);
+        result.push(value);
+        context.rect(x, y, size, size);
+        context.fill();
+        x += size;
       }
-      if (x >= (canvas.width - size)) { x = 0; y += size; }
-      const tile = context.getImageData(x, y, size, size);
-      const transformed = getTransformedData(tile.data);
-      const value = compare(transformed);
-      result.push(value);
-      context.rect(x, y, size, size);
-      context.fill();
-      x += size;
-    }, 0);
+
+      x = 0; y += size;
+    }
+      
+    display(result);
+  
   }
 
 
@@ -112,12 +125,12 @@ const getTransformedData = (tile) => {
 const compare = (data) => {
   const values = ideal_model.map((model) => {
     return model.map((el, i) => {
-      return +(el === data[i])
+      return +(Math.abs(el - data[i]) < 10)
     }).reduce((a, b) => a + b)
   });
-
   const max_value = Math.max(...values);
   const index = values.indexOf(max_value);
+ 
   return elements[index];
 }
 
