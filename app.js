@@ -62,6 +62,6 @@ load_btn.onchange = e => {
   const getTransformedData = (tile) => {
     const data = Array.from(tile);
     const chunked = data.chunk(4);
-    const transformed = chunked.map(pixel => parseInt((pixel.reduce((a, b) => a + b) - 255) / 3));
+    const transformed = chunked.map(pixel => parseInt(pixel.reduce((a, b) => a + b)/4));
     return transformed;
   }
