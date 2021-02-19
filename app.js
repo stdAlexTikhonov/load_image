@@ -30,5 +30,15 @@ load_btn.onchange = e => {
     canvas.width = canvas.width - 14;
     canvas.height = canvas.height - 14;
     context.putImageData(cutted, 0, 0);
+    let x = 0, y = 0, size = 16;
+    const interval = setInterval(() => {
+      if (y >= canvas.height) {
+        clearInterval(interval); return;
+      }
+      if (x >= canvas.width) { x = 0; y += size; }
+      context.rect(x, y, size, size);
+      context.fill();
+      x += size;
+    }, 100);
   }
 }
