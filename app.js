@@ -1,3 +1,12 @@
+Object.defineProperty(Array.prototype, 'chunk', {
+  value: function(chunkSize) {
+    var R = [];
+    for (var i = 0; i < this.length; i += chunkSize)
+      R.push(this.slice(i, i + chunkSize));
+    return R;
+  }
+});
+
 const load_btn = document.createElement('input');
 load_btn.type = 'file';
 load_btn.accept = ".png,.jpg,.jpeg";
@@ -8,6 +17,7 @@ document.body.appendChild(canvas);
 
 
 load_btn.onchange = e => {
+  const result = [];
   const file = e.target.files[0];
   
   let reader = new FileReader();
@@ -36,9 +46,22 @@ load_btn.onchange = e => {
         clearInterval(interval); return;
       }
       if (x >= canvas.width) { x = 0; y += size; }
+      const tile = context.getImageData(x, y, size, size);
+      const transformed = getTransformedData(tile.data);
+      result.push(transformed.join(','));
       context.rect(x, y, size, size);
       context.fill();
       x += size;
-    }, 100);
+    }, 10);
   }
+
+
+
 }
+
+  const getTransformedData = (tile) => {
+    const data = Array.from(tile);
+    const chunked = data.chunk(4);
+    const transformed = chunked.map(pixel => parseInt((pixel.reduce((a, b) => a + b) - 255) / 3));
+    return transformed;
+  }
