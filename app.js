@@ -79,7 +79,7 @@ load_btn.onchange = e => {
       if (y >= canvas.height) {
         clearInterval(interval); return;
       }
-      if (x >= canvas.width) { x = 0; y += size; }
+      if (x >= (canvas.width - size)) { x = 0; y += size; }
       const tile = context.getImageData(x, y, size, size);
       const transformed = getTransformedData(tile.data);
       result.push(transformed.join(','));
