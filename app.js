@@ -42,11 +42,17 @@ document.body.appendChild(block);
 
 const image_set = new Image();
 image_set.src = original;
+let ideal_model = [];
 
 image_set.onload = () => {
   set_canvas.width = image_set.width;
   set_canvas.height = image_set.height;
   set_context.drawImage(image_set, 0, 0);
+  ideal_model = elements.map((_, i) => {
+    const tile = set_context.getImageData(i * 16, 0, 16, 16);
+    const transformed = getTransformedData(tile.data);
+    return transformed;
+  })
 }
 
 
@@ -99,3 +105,4 @@ load_btn.onchange = e => {
     const transformed = chunked.map(pixel => parseInt(pixel.reduce((a, b) => a + b)/4));
     return transformed;
   }
+
