@@ -1,3 +1,5 @@
+import original from "./original_set.png";
+
 Object.defineProperty(Array.prototype, 'chunk', {
   value: function(chunkSize) {
     var R = [];
@@ -14,6 +16,38 @@ document.body.appendChild(load_btn);
 
 const canvas = document.createElement('canvas'), context = canvas.getContext('2d');
 document.body.appendChild(canvas);
+
+const set_canvas = document.createElement('canvas'), set_context = set_canvas.getContext('2d');
+document.body.appendChild(set_canvas);
+const block = document.createElement('div');
+block.style.display = 'flex';
+block.style.fontSize = '10px';
+
+const elements = ['O', '.', 'R1', 'R2', 'B', 'E', '+', ' ', 'X', 'D1', '>', '<', '#', 'L1', 'L2', 'L3', 'W', 'P1', 'D2', 'PC', '*', 'A', 'EL'];
+
+elements.forEach((_) => {
+  const el = document.createElement('div');
+  el.style.width = '16px';
+  el.style.display = 'flex';
+  const inner = document.createElement('div');
+  inner.textContent = _;
+  inner.style.margin = 'auto';
+  el.appendChild(inner);
+  block.appendChild(el);
+});
+
+document.body.appendChild(block);
+
+
+
+const image_set = new Image();
+image_set.src = original;
+
+image_set.onload = () => {
+  set_canvas.width = image_set.width;
+  set_canvas.height = image_set.height;
+  set_context.drawImage(image_set, 0, 0);
+}
 
 
 load_btn.onchange = e => {
