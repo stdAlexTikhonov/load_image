@@ -23,7 +23,7 @@ const block = document.createElement('div');
 block.style.display = 'flex';
 block.style.fontSize = '10px';
 
-const elements = ['O', '.', 'R1', 'R2', 'B', 'E', '+', ' ', 'X', 'D1', '>', '<', '#', 'L1', 'L2', 'L3', 'W', 'P1', 'D2', 'PC', '*', 'A', 'EL'];
+const elements = ['O', '.', 'R', 'R', 'B', 'E', '+', ' ', 'X', 'D', '>', '<', '#', 'L', 'L', 'L', 'W', 'P', 'D', 'C', '*', 'A', 'E'];
 
 elements.forEach((_) => {
   const el = document.createElement('div');
@@ -53,6 +53,7 @@ image_set.onload = () => {
     const transformed = getTransformedData(tile.data);
     return transformed;
   })
+  console.log(ideal_model);
 }
 
 
@@ -83,26 +84,49 @@ load_btn.onchange = e => {
     let x = 0, y = 0, size = 16;
     const interval = setInterval(() => {
       if (y >= canvas.height) {
+        display(result);
         clearInterval(interval); return;
       }
       if (x >= (canvas.width - size)) { x = 0; y += size; }
       const tile = context.getImageData(x, y, size, size);
       const transformed = getTransformedData(tile.data);
-      result.push(transformed);
+      const value = compare(transformed);
+      result.push(value);
       context.rect(x, y, size, size);
       context.fill();
       x += size;
-    }, 10);
+    }, 0);
   }
 
 
 
 }
 
-  const getTransformedData = (tile) => {
-    const data = Array.from(tile);
-    const chunked = data.chunk(4);
-    const transformed = chunked.map(pixel => parseInt(pixel.reduce((a, b) => a + b)/4));
-    return transformed;
-  }
+const getTransformedData = (tile) => {
+  const data = Array.from(tile);
+  const chunked = data.chunk(4);
+  const transformed = chunked.map(pixel => parseInt(pixel.reduce((a, b) => a + b)/4));
+  return transformed;
+}
 
+const compare = (data) => {
+  const values = ideal_model.map((model) => {
+    return model.map((el, i) => {
+      return +(el === data[i])
+    }).reduce((a, b) => a + b)
+  });
+
+  const max_value = Math.max(...values);
+  const index = values.indexOf(max_value);
+  return elements[index];
+}
+
+
+const display = (result) => {
+  const chunked = result.chunk(58);
+  const transformed = chunked.map(row => row.join(" "));
+  const itog = transformed.join("\r\n");
+  const pre = document.createElement('pre');
+  pre.innerText = itog;
+  document.body.appendChild(pre);
+}
