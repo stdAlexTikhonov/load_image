@@ -24,4 +24,11 @@ load_btn.onchange = e => {
     }
 
   }
+
+  canvas.onclick = () => {
+    const cutted = context.getImageData(7, 7, canvas.width - 7, canvas.height - 7);
+    canvas.width = canvas.width - 14;
+    canvas.height = canvas.height - 14;
+    context.putImageData(cutted, 0, 0);
+  }
 }
