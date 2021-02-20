@@ -37,7 +37,7 @@ const block = document.createElement('div');
 block.style.display = 'flex';
 block.style.fontSize = '10px';
 
-const elements = ['O', '.', 'R', 'U', 'B', 'E', '+', ' ', 'X', 'D', '>', '<', '#', 'L', 'M', 'N', 'W', 'P', 'Y', 'C', '*', 'A', 'Z'];
+const elements = ['O', '.', 'R', 'U', 'B', 'E', '+', ' ', 'X', 'D', '>', '<', '#', 'L', 'M', 'N', 'W', 'P', 'Y', 'C', '*', 'A', 'Z', '1','2','3','4','5','6','7','8','9','^','&','%'];
 
 elements.forEach((_) => {
   const el = document.createElement('div');
