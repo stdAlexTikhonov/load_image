@@ -19,7 +19,10 @@ document.body.style.alignItems = 'flex-start';
 
 
 const canvas = document.createElement('canvas'), context = canvas.getContext('2d');
+const pre = document.createElement('pre');
+canvas.height = 10;
 document.body.appendChild(canvas);
+document.body.appendChild(pre);
 
 const set_canvas = document.createElement('canvas'), set_context = set_canvas.getContext('2d');
 document.body.appendChild(set_canvas);
@@ -63,9 +66,8 @@ image_set.onload = () => {
 load_btn.onchange = e => {
   const result = [];
   const file = e.target.files[0];
-  
   let reader = new FileReader();
-
+  pre.innerText = '';
   reader.readAsDataURL(file);
 
   reader.onload = e => {
@@ -132,7 +134,6 @@ const display = (result) => {
   const chunked = result.chunk(58);
   const transformed = chunked.map(row => row.join(" "));
   const itog = transformed.join("\r\n");
-  const pre = document.createElement('pre');
   pre.innerText = itog;
-  document.body.appendChild(pre);
+  canvas.height = 0;
 }
