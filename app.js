@@ -21,16 +21,6 @@ document.body.style.alignItems = 'flex-start';
 const canvas = document.createElement('canvas'), context = canvas.getContext('2d');
 document.body.appendChild(canvas);
 
-const trim_button = document.createElement('button');
-trim_button.innerText = "trim";
-trim_button.onclick = () => {
-  const cutted = context.getImageData(7, 7, canvas.width - 7, canvas.height - 7);
-  canvas.width = canvas.width - 14;
-  canvas.height = canvas.height - 14;
-  context.putImageData(cutted, 0, 0);
-};
-document.body.appendChild(trim_button);
-
 const set_canvas = document.createElement('canvas'), set_context = set_canvas.getContext('2d');
 document.body.appendChild(set_canvas);
 const block = document.createElement('div');
@@ -90,7 +80,10 @@ load_btn.onchange = e => {
   }
 
   canvas.onclick = () => {
-
+    const cutted = context.getImageData(7, 7, canvas.width - 7, canvas.height - 7);
+    canvas.width = canvas.width - 14;
+    canvas.height = canvas.height - 14;
+    context.putImageData(cutted, 0, 0);
     let x = 0, y = 0, size = 16;
     while (y < canvas.height) {
       
