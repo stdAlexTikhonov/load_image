@@ -170,7 +170,7 @@ const compare = (data) => {
 const display = (result) => {
   const chunked = result.chunk(58);
   console.log(chunked);
-  const transformed = chunked.map((row) => row.join(" "));
+  const transformed = chunked.map((row) => row.join(""));
   const itog = transformed.join("\r\n");
   pre.innerText = itog;
   canvas.height = 0;
