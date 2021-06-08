@@ -67,6 +67,7 @@ const elements = [
   "^",
   "&",
   "%",
+  "F",
 ];
 
 elements.forEach((_) => {
