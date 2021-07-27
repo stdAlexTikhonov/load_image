@@ -128,8 +128,9 @@ load_btn.onchange = (e) => {
     let x = 0,
       y = 0,
       size = 16;
+
     while (y < canvas.height) {
-      while (x < canvas.width - size) {
+      while (x <= canvas.width - size) {
         const tile = context.getImageData(x, y, size, size);
         const transformed = getTransformedData(tile.data);
         const value = compare(transformed);
@@ -170,7 +171,6 @@ const compare = (data) => {
 
 const display = (result) => {
   const chunked = result.chunk(58);
-  console.log(chunked);
   const transformed = chunked.map((row) => row.join(""));
   const itog = transformed.join("\r\n");
   pre.innerText = itog;
